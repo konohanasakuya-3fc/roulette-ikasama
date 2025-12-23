@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>カスタムルーレット</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1>カスタムルーレット</h1>
+
+  <!-- 画面切り替え -->
+  <div>
+    <button id="toRoulette">ルーレット</button>
+    <button id="toMenu">メニュー</button>
+  </div>
+
+  <!-- ルーレット画面 -->
+  <section id="rouletteScreen">
+    <canvas id="rouletteCanvas" width="300" height="300"></canvas>
+    <br>
+    <button id="spinButton">START</button>
+    <p id="resultText"></p>
+  </section>
+
+  <!-- メニュー画面 -->
+  <section id="menuScreen" style="display:none;">
+    <h2>項目設定</h2>
+
+    <table id="itemTable">
+      <thead>
+        <tr>
+          <th>名前</th>
+          <th>割合</th>
+          <th>強制</th>
+          <th>削除</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- JSで生成 -->
+      </tbody>
+    </table>
+
+    <button id="addItem">項目追加</button>
+    <button id="saveItems">保存</button>
+  </section>
+
+  <script src="main.js"></script>
+</body>
+</html>
