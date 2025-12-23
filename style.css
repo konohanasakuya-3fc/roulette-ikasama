@@ -1,0 +1,29 @@
+
+  #rouletteArea {
+    position: relative;
+    width: 300px;
+    margin: 0 auto;
+  }
+  body {
+    background: linear-gradient(135deg, red, #d9e2ec);
+  }
+  
+  #rouletteContainer {
+    width: 300px;
+    height: 300px;
+  }
+  
+  #arrow {
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-bottom: 20px solid red;
+    z-index: 10;
+    pointer-events: none;
+  }
+  

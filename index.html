@@ -2,12 +2,12 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>カスタムルーレット</title>
+  <title>ルーレット</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <h1>カスタムルーレット</h1>
+  <h1>お楽しみルーレット</h1>
 
   <!-- 画面切り替え -->
   <div>
@@ -17,10 +17,17 @@
 
   <!-- ルーレット画面 -->
   <section id="rouletteScreen">
-    <canvas id="rouletteCanvas" width="300" height="300"></canvas>
-    <br>
+
+    <div id="rouletteArea">
+        <div id="rouletteContainer">
+          <canvas id="rouletteCanvas" width="300" height="300"></canvas>
+        </div>
+        <div id="arrow"></div>
+      </div>
+    <canvas id="rouletteCanvas" width="300" height="200"></canvas>
     <button id="spinButton">START</button>
     <p id="resultText"></p>
+
   </section>
 
   <!-- メニュー画面 -->
@@ -32,7 +39,7 @@
         <tr>
           <th>名前</th>
           <th>割合</th>
-          <th>強制</th>
+          <th>イカサマ</th>
           <th>削除</th>
         </tr>
       </thead>
