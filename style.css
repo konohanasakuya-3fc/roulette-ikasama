@@ -5,7 +5,7 @@
     margin: 0 auto;
   }
   body {
-    background: linear-gradient(135deg, red, #d9e2ec);
+    background: linear-gradient(135deg, lightblue, #d9e2ec);
   }
   
   #rouletteContainer {
@@ -26,4 +26,26 @@
     z-index: 10;
     pointer-events: none;
   }
+
+  #legend {
+    margin-top: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    justify-content: center;
+    font-size: 14px;
+  }
+  
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .legend-color {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px; /* 0 にすれば四角、50% にすれば丸 */
+  }
+  
   

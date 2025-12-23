@@ -3,14 +3,18 @@
 // =======================
 
 let items = [
-    { id: 1, label: "A", weight: 3, force: false },
-    { id: 2, label: "B", weight: 1, force: false },
-    { id: 3, label: "C", weight: 2, force: false }
+    { id: 1, label: "たわし", weight: 9, force: false },
+    { id: 2, label: "プレゼント", weight: 1, force: true },
+    { id: 3, label: "月の土地", weight: 1, force: false },
+    { id: 4, label: "世界一周旅行券", weight: 2, force: false },
+    { id: 5, label: "ティッシュ一年分", weight: 6, force: false }
+
   ];
 
   const COLORS = [
-    "#ff7675",
-    "#74b9ff",
+    "#f4a460",
+    "#f4a460",
+    "#ff6347",
     "#55efc4",
     "#ffeaa7",
     "#a29bfe",
@@ -107,26 +111,29 @@ let items = [
   }
   
   function drawRoulette() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, 300, 300);
   
     const total = items.reduce((s, i) => s + i.weight, 0);
-    let startAngle = -Math.PI / 2; // 12時方向開始
+    let currentDeg = 0;
   
-    items.forEach(item => {
-      const angle = (item.weight / total) * Math.PI * 2;
+    for (const item of items) {
+      const sweep = item.weight / total * 360;
+  
+      const startRad = (currentDeg - 90) * Math.PI / 180;
+      const endRad   = (currentDeg + sweep - 90) * Math.PI / 180;
   
       ctx.beginPath();
       ctx.moveTo(150, 150);
-      ctx.arc(150, 150, 150, startAngle, startAngle + angle);
+      ctx.arc(150, 150, 150, startRad, endRad);
       ctx.closePath();
-      
-      //ctx.fillStyle = randomColor(item.id);
       ctx.fillStyle = COLORS[item.id % COLORS.length];
       ctx.fill();
   
-      startAngle += angle;
-    });
+      currentDeg += sweep;
+    }
   }
+  
+  
   
   // =======================
   // 回転・当選判定
@@ -134,7 +141,22 @@ let items = [
   
   let currentRotation = 0;
   let isSpinning = false;
-
+  
+  function getCurrentAngle(rotation) {
+    return ((rotation % 360) + 360) % 360;
+  }
+  function getWinnerByAngle(angle) {
+    const ranges = getItemAngleRanges(items);
+  
+    for (const r of ranges) {
+      if (angle >= r.start && angle < r.end) {
+        return r.item;
+      }
+    }
+    return null;
+  }
+  
+  
   spinButton.onclick = () => {
     if (isSpinning || items.length === 0) return;
     isSpinning = true;
@@ -145,28 +167,33 @@ let items = [
     let targetAngle;
   
     const forcedItems = items.filter(i => i.force);
-  
+
+    
     if (forcedItems.length > 0) {
       const forcedItem =
         forcedItems[Math.floor(Math.random() * forcedItems.length)];
-  
+    
+      const ranges = getItemAngleRanges(items);
       const range = ranges.find(r => r.item === forcedItem);
-  
+    
+      // ★ 12時基準の角度をそのまま使う
       targetAngle =
         range.start + Math.random() * (range.end - range.start);
     } else {
       targetAngle = Math.random() * 360;
     }
+    
+      
   
     // ★ここが修正ポイント
-    const currentAngle = currentRotation % 360;
+    const currentAngle = getCurrentAngle(currentRotation);
+
     const delta =
       (360 - currentAngle + targetAngle) % 360;
-  
+    
     const targetRotation =
-      currentRotation +
-      extraRotations +
-      delta;
+      currentRotation + 360 * 5 + delta;
+    
   
     wrapper.style.transition =
       "transform 4s cubic-bezier(0.25, 0.1, 0.25, 1)";
@@ -176,7 +203,7 @@ let items = [
     currentRotation = targetRotation;
   
     setTimeout(() => {
-      const stopAngle = getStopAngle(currentRotation+180);
+      const stopAngle = getStopAngle(currentRotation);
       const winner = getWinnerByAngle(stopAngle);
   
       resultText.textContent =
@@ -218,22 +245,47 @@ let items = [
   
     for (const item of items) {
       const range = (item.weight / total) * 360;
+  
       ranges.push({
         item,
-        start: current,
+        start: current,        // ← 12時基準
         end: current + range
       });
+  
       current += range;
     }
-  
     return ranges;
   }
+  
 
   function getForceCandidates() {
     return items.filter(i => i.force);
   }
+
+  function renderLegend() {
+    const legend = document.getElementById("legend");
+    legend.innerHTML = "";
+  
+    items.forEach(item => {
+      const div = document.createElement("div");
+      div.className = "legend-item";
+  
+      const colorBox = document.createElement("div");
+      colorBox.className = "legend-color";
+      colorBox.style.background = COLORS[item.id % COLORS.length];
+  
+      const label = document.createElement("span");
+      label.textContent = item.label;
+  
+      div.appendChild(colorBox);
+      div.appendChild(label);
+  
+      legend.appendChild(div);
+    });
+  }
+  
   
   
   // 初期描画
   drawRoulette();
-  
+  renderLegend();
