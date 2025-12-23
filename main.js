@@ -14,7 +14,7 @@ let items = [
   const COLORS = [
     "#f4a460",
     "#f4a460",
-    "#ff6347",
+    "#ff0000",
     "#55efc4",
     "#ffeaa7",
     "#a29bfe",
@@ -155,6 +155,23 @@ let items = [
     }
     return null;
   }
+
+  function spawnConfetti(count = 30) {
+    for (let i = 0; i < count; i++) {
+      const c = document.createElement("div");
+      c.className = "confetti";
+  
+      c.style.left = Math.random() * 100 + "vw";
+      c.style.background =
+        `hsl(${Math.random() * 360}, 80%, 60%)`;
+      c.style.animationDuration =
+        1 + Math.random() * 1 + "s";
+  
+      document.body.appendChild(c);
+      c.addEventListener("animationend", () => c.remove());
+    }
+  }
+  
   
   
   spinButton.onclick = () => {
@@ -208,6 +225,24 @@ let items = [
   
       resultText.textContent =
         winner ? `結果: ${winner.label}` : "結果なし";
+
+        const flash = document.getElementById("flash");
+flash.classList.add("active");
+flash.addEventListener("animationend", () => {
+  flash.classList.remove("active");
+}, { once: true });
+
+const winMessage = document.getElementById("winMessage");
+winMessage.classList.add("show");
+winMessage.addEventListener("animationend", () => {
+  winMessage.classList.remove("show");
+}, { once: true });
+
+spawnConfetti();
+
+
+
+
   
       isSpinning = false;
     }, 4000);
